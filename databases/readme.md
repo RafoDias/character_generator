@@ -1,0 +1,1 @@
+# Diretório designado para os bancos de dados integrados da aplicação
