@@ -2,8 +2,8 @@ use crate::models::Character;
 
 use super::service::character_service;
 
-pub fn save(character: Character) {
-    character_service::save(character);
+pub fn save(character: Character) -> Character {
+    return character_service::save(character);
 }
 
 pub fn get(character: Character) -> Character {

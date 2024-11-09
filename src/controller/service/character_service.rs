@@ -2,8 +2,8 @@ use crate::models::Character;
 
 use super::repository::character_repository;
 
-pub fn save(character: Character) {
-    character_repository::save(character);
+pub fn save(character: Character) -> Character {
+    return character_repository::save(character);
 }
 
 pub fn get(character: Character) -> Character {
