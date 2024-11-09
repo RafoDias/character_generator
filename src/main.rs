@@ -1,5 +1,6 @@
 mod controller;
 mod models;
+mod utils;
 
 use chrono::NaiveDate;
 
@@ -7,6 +8,7 @@ use models::Character;
 use models::Class;
 
 use controller::character_controller;
+use utils::cli;
 
 fn main() {
     // let character: Character = Character {
