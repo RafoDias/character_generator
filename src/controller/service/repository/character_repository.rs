@@ -1,6 +1,6 @@
 use sled::IVec;
 
-use crate::models::Character;
+use crate::models::{character::get_empty_caracter, Character};
 
 const REPO_PATH: &str = "/characters_db";
 
@@ -13,12 +13,7 @@ pub fn save(character: Character) -> Character {
     let db_res = &db.get(&character.name).unwrap();
 
     if db_res.is_none() {
-        return Character {
-            name: "".to_string(),
-            level: 0,
-            class: crate::models::Class::NoClass,
-            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
-        };
+        return get_empty_caracter();
     }
     let serialized_value = db_res.clone().unwrap();
 
@@ -32,12 +27,7 @@ pub fn get(character: Character) -> Character {
     let db_res = &db.get(name).unwrap();
 
     if db_res.is_none() {
-        return Character {
-            name: "".to_string(),
-            level: 0,
-            class: crate::models::Class::NoClass,
-            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
-        };
+        return get_empty_caracter();
     }
     let serialized_value = db_res.clone().unwrap();
 
@@ -50,12 +40,7 @@ pub fn remove(character: Character) -> Character {
 
     let db_res = &db.remove(name).unwrap();
     if db_res.is_none() {
-        return Character {
-            name: "".to_string(),
-            level: 0,
-            class: crate::models::Class::NoClass,
-            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
-        };
+        return get_empty_caracter();
     }
     let serialized_value = db_res.clone().unwrap();
 
