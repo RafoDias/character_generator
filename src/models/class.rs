@@ -10,6 +10,14 @@ pub enum Class {
     Rogue,
 }
 
+impl Class {
+    pub fn iter() -> ClassIter {
+        ClassIter {
+            current: Class::NoClass,
+        }
+    }
+}
+
 impl fmt::Display for Class {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
@@ -79,3 +87,25 @@ impl Clone for Class {
 }
 
 impl Copy for Class {}
+
+pub struct ClassIter {
+    current: Class,
+}
+
+impl Iterator for ClassIter {
+    type Item = Class;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let class = match self.current {
+            Class::NoClass => Some(Class::Warrior),
+            Class::Warrior => Some(Class::Cleric),
+            Class::Cleric => Some(Class::Rogue),
+            Class::Rogue => None,
+        };
+
+        if let Some(next_class) = class {
+            self.current = next_class;
+        }
+        class
+    }
+}
