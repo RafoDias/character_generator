@@ -17,6 +17,7 @@ pub fn save(character: Character) -> Character {
     }
     let serialized_value = db_res.clone().unwrap();
 
+    db.flush().unwrap();
     return serde_cbor::from_slice(&serialized_value).unwrap();
 }
 
@@ -31,6 +32,7 @@ pub fn get(character: Character) -> Character {
     }
     let serialized_value = db_res.clone().unwrap();
 
+    db.flush().unwrap();
     return serde_cbor::from_slice(&serialized_value).unwrap();
 }
 
@@ -44,5 +46,6 @@ pub fn remove(character: Character) -> Character {
     }
     let serialized_value = db_res.clone().unwrap();
 
+    db.flush().unwrap();
     return serde_cbor::from_slice(&serialized_value).unwrap();
 }

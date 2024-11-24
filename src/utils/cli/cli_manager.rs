@@ -1,6 +1,6 @@
 use crate::{
-    controller::character_controller::{get_by_name, save},
-    models::{character::Character, Class},
+    controller::character_controller,
+    models::*,
     utils::cli::cli_validation::{
         get_date_input, get_input, get_int_in_range, get_str_with_max_length,
     },
@@ -34,13 +34,13 @@ fn criar_personagem() {
     let birthday: chrono::NaiveDate =
         get_date_input("Digite a data de nascimento do personagem (dd-mm-aaaa):");
 
-    let character: Character = crate::Character {
+    let character: Character = Character {
         name,
         class,
         level,
         birthday,
     };
-    let returned_character: Character = save(&character);
+    let returned_character: Character = character_controller::save(&character);
 
     println!("Personagem salvo.\n{:?}", returned_character);
 }
@@ -49,7 +49,7 @@ fn buscar_personagem() {
     let name: String =
         get_str_with_max_length("Digite o nome do personagem (1 a 40 caracteres):", 40);
 
-    let returned_character: Character = get_by_name(&name);
+    let returned_character: Character = character_controller::get_by_name(&name);
 
     if returned_character.name == "" {
         println!("Personagem não encontrado.");
@@ -63,14 +63,14 @@ fn remover_personagem() {
     let name: String =
         get_str_with_max_length("Digite o nome do personagem (1 a 40 caracteres):", 40);
 
-    let character: Character = crate::Character {
+    let character: Character = Character {
         name,
         class: Class::NoClass,
         level: 0,
         birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
     };
 
-    let returned_character = crate::character_controller::remove(&character);
+    let returned_character = character_controller::remove(&character);
 
     if returned_character.name == "" {
         println!("Personagem não encontrado.");

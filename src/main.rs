@@ -1,16 +1,15 @@
 mod controller;
 mod models;
+mod tests;
 mod utils;
 
-use chrono::NaiveDate;
-
-use models::Character;
-use models::Class;
-
-use controller::character_controller;
 use utils::cli;
 
 fn main() {
+    cli::cli_manager::start();
+
+    //
+
     // let character: Character = Character {
     //     name: "Isabelle".to_string(),
     //     level: 1,
@@ -29,10 +28,15 @@ fn main() {
 
     // character_controller::save(character);
 
-    let returned_character: Character = character_controller::get_by_name("Isabelle");
-    println!("{:?}", returned_character);
-    let returned_character: Character = character_controller::get_by_name("Natã");
-    println!("{:?}", returned_character);
-    let returned_character: Character = character_controller::get_by_name("Alice");
-    println!("{:?}", returned_character);
+    // println!(
+    //     "{:?}",
+    //     character_controller::get_by_name(&"Jennifer".to_string())
+    // );
+
+    // let returned_character: Character = character_controller::get_by_name("Isabelle");
+    // println!("{:?}", returned_character);
+    // let returned_character: Character = character_controller::get_by_name("Natã");
+    // println!("{:?}", returned_character);
+    // let returned_character: Character = character_controller::get_by_name("Alice");
+    // println!("{:?}", returned_character);
 }

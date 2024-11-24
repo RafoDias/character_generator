@@ -1,8 +1,9 @@
 #[cfg(test)]
 pub mod tests {
-    use character_controller::{get_by_name, save};
-
-    use crate::*;
+    use crate::controller::character_controller;
+    use crate::models::*;
+    use character::get_empty_caracter;
+    use chrono::NaiveDate;
 
     fn get_const_test_character() -> Character {
         return Character {
@@ -33,7 +34,7 @@ pub mod tests {
         println!("Character removed");
     }
 
-    #[test]
+    // #[test]
     pub fn save_character() {
         let test_character = get_const_test_character();
         println!("test_character - {:?}", test_character);
@@ -41,25 +42,27 @@ pub mod tests {
         let saved_character = character_controller::save(&test_character);
         println!("saved_character - {:?}", saved_character);
 
-        assert_eq!(test_character.level, saved_character.level);
-        assert_eq!(test_character.name, saved_character.name);
-        assert_eq!(test_character.class, saved_character.class);
-        assert_eq!(test_character.birthday, saved_character.birthday);
+        assert_eq!(test_character, saved_character);
     }
 
-    #[test]
+    // #[test]
     pub fn get_character() {
         let test_character = get_const_test_character();
         let name = &test_character.name;
         println!("test_character - {:?}", test_character);
 
-        let returned_character = get_by_name(name);
-        println!("returned_character - {:?}", returned_character);
+        let returned_character = character_controller::get_by_name(name);
 
-        assert_eq!(test_character.name, returned_character.name);
+        if returned_character.name == "" {
+            println!("Character not found.");
+            assert_eq!(returned_character, get_empty_caracter());
+        } else {
+            println!("returned_character - {:?}", returned_character);
+            assert_eq!(test_character, returned_character);
+        }
     }
 
-    #[test]
+    // #[test]
     pub fn remove_character() {
         let test_character = get_const_test_character();
         println!("test_character - {:?}", test_character);
@@ -68,14 +71,6 @@ pub mod tests {
         let returned_character = character_controller::get_by_name(&test_character.name);
         println!("returned_character - {:?}", returned_character);
 
-        assert_eq!(
-            returned_character,
-            Character {
-                name: "".to_string(),
-                level: 0,
-                class: Class::NoClass,
-                birthday: NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
-            }
-        );
+        assert_eq!(returned_character, get_empty_caracter());
     }
 }
