@@ -7,9 +7,9 @@ pub fn save(character: Character) -> Character {
 }
 
 pub fn get(character: Character) -> Character {
-    character_repository::get(character)
+    return character_repository::get(character);
 }
 
-pub fn get_by_name(name: &str) -> Character {
-    character_repository::get_by_name(name)
+pub fn remove(character: Character) -> Character {
+    return character_repository::remove(character);
 }

@@ -1,35 +1,63 @@
+use sled::IVec;
+
 use crate::models::Character;
 
 const REPO_PATH: &str = "/characters_db";
 
 pub fn save(character: Character) -> Character {
     let db: sled::Db = sled::open(super::get_database_path(REPO_PATH)).unwrap();
-    let serialized_character: Vec<u8> = serde_cbor::to_vec(&character).unwrap();
+    let char = character.clone();
+    let serialized_character: Vec<u8> = serde_cbor::to_vec(&char).unwrap();
 
-    let returned_character: Character = serde_cbor::from_slice(
-        &db.insert(character.id, serialized_character)
-            .unwrap()
-            .unwrap(),
-    )
-    .unwrap();
+    db.insert(&character.name, serialized_character).unwrap();
+    let db_res = &db.get(&character.name).unwrap();
 
-    return returned_character;
+    if db_res.is_none() {
+        return Character {
+            name: "".to_string(),
+            level: 0,
+            class: crate::models::Class::NoClass,
+            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
+        };
+    }
+    let serialized_value = db_res.clone().unwrap();
+
+    return serde_cbor::from_slice(&serialized_value).unwrap();
 }
 
 pub fn get(character: Character) -> Character {
     let name: &str = &character.name;
     let db: sled::Db = sled::open(super::get_database_path(REPO_PATH)).unwrap();
 
-    return serde_cbor::from_slice(&db.get(name).unwrap().unwrap()).unwrap();
+    let db_res = &db.get(name).unwrap();
+
+    if db_res.is_none() {
+        return Character {
+            name: "".to_string(),
+            level: 0,
+            class: crate::models::Class::NoClass,
+            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
+        };
+    }
+    let serialized_value = db_res.clone().unwrap();
+
+    return serde_cbor::from_slice(&serialized_value).unwrap();
 }
 
-pub fn get_by_name(name: &str) -> Character {
+pub fn remove(character: Character) -> Character {
+    let name: &str = &character.name;
     let db: sled::Db = sled::open(super::get_database_path(REPO_PATH)).unwrap();
 
-    return serde_cbor::from_slice(&db.get(name).unwrap().unwrap()).unwrap();
-}
+    let db_res = &db.remove(name).unwrap();
+    if db_res.is_none() {
+        return Character {
+            name: "".to_string(),
+            level: 0,
+            class: crate::models::Class::NoClass,
+            birthday: chrono::NaiveDate::from_ymd_opt(1, 1, 1).unwrap(),
+        };
+    }
+    let serialized_value = db_res.clone().unwrap();
 
-// Todo?
-pub fn cant_change_character_name_on_save(sent: Character, retrieved: Character) -> bool {
-    return sent.name == retrieved.name;
+    return serde_cbor::from_slice(&serialized_value).unwrap();
 }
