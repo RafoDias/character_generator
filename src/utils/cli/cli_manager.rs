@@ -80,6 +80,20 @@ fn remover_personagem() {
     println!("Personagem removido:\n{:?}", returned_character);
 }
 
+fn listar_personagens() {
+    let characters: Vec<Character> = character_controller::list();
+
+    if characters.len() == 0 {
+        println!("Nenhum personagem encontrado.");
+        return;
+    }
+
+    println!("Personagens encontrados:");
+    for character in characters {
+        println!("{:?}", character);
+    }
+}
+
 fn menu_acoes() -> i32 {
     let mut int_input: i32 = 0;
 
@@ -88,6 +102,7 @@ fn menu_acoes() -> i32 {
         1 - Criar um personagem
         2 - Buscar um personagens
         3 - Remover um personagem
+        4 - Listar todos os personagens
         0 - Sair",
     );
     println!("Você escolheu a opção {}", int_input);
@@ -96,6 +111,7 @@ fn menu_acoes() -> i32 {
         1 => criar_personagem(),
         2 => buscar_personagem(),
         3 => remover_personagem(),
+        4 => listar_personagens(),
         0 => return 0,
         _ => {
             println!("Opção inválida");

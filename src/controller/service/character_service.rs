@@ -13,3 +13,7 @@ pub fn get(character: Character) -> Character {
 pub fn remove(character: Character) -> Character {
     return character_repository::remove(character);
 }
+
+pub fn list() -> Vec<Character> {
+    return character_repository::list();
+}

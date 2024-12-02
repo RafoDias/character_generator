@@ -49,3 +49,17 @@ pub fn remove(character: Character) -> Character {
     db.flush().unwrap();
     return serde_cbor::from_slice(&serialized_value).unwrap();
 }
+
+pub fn list() -> Vec<Character> {
+    let db: sled::Db = sled::open(super::get_database_path(REPO_PATH)).unwrap();
+    let mut characters: Vec<Character> = Vec::new();
+
+    db.iter().for_each(|x| {
+        let (_key, value) = x.unwrap();
+        let character: Character = serde_cbor::from_slice(&value).unwrap();
+        characters.push(character);
+    });
+
+    db.flush().unwrap();
+    return characters;
+}

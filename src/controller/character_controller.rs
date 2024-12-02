@@ -20,3 +20,7 @@ pub fn get_by_name(name: &String) -> Character {
 
     return character_service::get(character);
 }
+
+pub fn list() -> Vec<Character> {
+    return character_service::list();
+}
